@@ -4,5 +4,8 @@
     <string name="app_name">TDGIS</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="vectorexample">矢量演示</string>
+    <string name="locateexample">定位演示</string>
+    <string name="gridexample">栅格演示</string>
 
 </resources>

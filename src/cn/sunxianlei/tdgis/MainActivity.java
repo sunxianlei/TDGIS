@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.sunxianlei.tdgis.activity.AboutActivity;
+import cn.sunxianlei.tdgis.activity.GridExampleActivity;
+import cn.sunxianlei.tdgis.activity.LocateExampleActivity;
 import cn.sunxianlei.tdgis.activity.MapActivity;
+import cn.sunxianlei.tdgis.activity.VectorExampleActivity;
 import cn.sunxianlei.tdgis.adapter.MenuGridAdapter;
 import cn.sunxianlei.tdgis.vo.MenuItem;
 
@@ -28,6 +31,9 @@ public class MainActivity extends Activity {
 		
 		menuGridView=(GridView)findViewById(R.id.mainMenuGridView);
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
+		menuItems.add(new MenuItem("矢量演示",R.drawable.menuvector));
+		menuItems.add(new MenuItem("定位演示",R.drawable.menulocate));
+		menuItems.add(new MenuItem("栅格演示",R.drawable.menugrid));
 		menuItems.add(new MenuItem("地图",R.drawable.menumap));
 		menuItems.add(new MenuItem("关于",R.drawable.menuabout));
 		
@@ -62,9 +68,18 @@ public class MainActivity extends Activity {
 		Class<?> startClass = null;
 		switch (position) {
 		case 0:
-			startClass = MapActivity.class;
+			startClass = VectorExampleActivity.class;
 			break;
 		case 1:
+			startClass = LocateExampleActivity.class;
+			break;
+		case 2:
+			startClass = GridExampleActivity.class;
+			break;
+		case 3:
+			startClass = MapActivity.class;
+			break;
+		case 4:
 			startClass = AboutActivity.class;
 			break;
 		default:
