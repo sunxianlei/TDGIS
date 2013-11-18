@@ -21,7 +21,7 @@
         </com.esri.android.map.MapView>
     </LinearLayout>
 
-    <!--
+
     <LinearLayout
         android:id="@+id/actionBarInMapActivity"
         android:layout_width="match_parent"
@@ -29,7 +29,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:orientation="horizontal" >
-		
+        <Button 
+            android:id="@+id/drawBtnInMapActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="画线"/>
     </LinearLayout>
-    -->
 </RelativeLayout>

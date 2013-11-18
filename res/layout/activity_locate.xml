@@ -2,6 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
+    <LinearLayout
+        android:id="@+id/mapContainerInLocateActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical" >
+        <com.esri.android.map.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mapviewInLocateActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            initExtent="">  
+        </com.esri.android.map.MapView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/actionBarInLocateActivity"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal" >
+        <Button 
+            android:id="@+id/drawBtnInLocateActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="画线"/>
+    </LinearLayout>
 
 </RelativeLayout>
