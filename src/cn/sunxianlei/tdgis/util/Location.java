@@ -1,6 +1,10 @@
 package cn.sunxianlei.tdgis.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Application;
+import android.graphics.drawable.Drawable;
 import android.os.Process;
 import android.os.Vibrator;
 import android.util.Log;
@@ -11,32 +15,31 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.BDNotifyListener;
 import com.baidu.location.GeofenceClient;
 import com.baidu.location.LocationClient;
+import com.esri.android.map.GraphicsLayer;
+import com.esri.android.map.MapView;
+import com.esri.core.geometry.Point;
+import com.esri.core.map.Graphic;
 
 public class Location extends Application {
 
 	public LocationClient mLocationClient = null;
 	public GeofenceClient mGeofenceClient;
-	private String mData;  
+	private String mData;
 	public MyLocationListenner myListener = new MyLocationListenner();
 	public TextView mTv;
 	public NotifyLister mNotifyer=null;
 	public Vibrator mVibrator01;
 	public static String TAG = "LocTestDemo";
 	
+	public MapView mapView=null;
+	public Point pinPoint=null;
+	
 	@Override
 	public void onCreate() {
 		mLocationClient = new LocationClient(this);
-		/**——————————————————————————————————————————————————————————————————
-		 * 这里的AK和应用签名包名绑定，如果使用在自己的工程中需要替换为自己申请的Key
-		 * ——————————————————————————————————————————————————————————————————
-		 */
 		mLocationClient.setAK(Config.BAIDU_AK);
 		mLocationClient.registerLocationListener( myListener );
 		mGeofenceClient = new GeofenceClient(this);
-		//位置提醒相关代码
-//		mNotifyer = new NotifyLister();
-//		mNotifyer.SetNotifyLocation(40.047883,116.312564,3000,"gps");//4个参数代表要位置提醒的点的坐标，具体含义依次为：纬度，经度，距离范围，坐标系类型(gcj02,gps,bd09,bd09ll)
-//		mLocationClient.registerNotify(mNotifyer);
 		
 		super.onCreate(); 
 		Log.d(TAG, "... Application onCreate... pid=" + Process.myPid());
@@ -67,8 +70,8 @@ public class Location extends Application {
 			StringBuffer sb = new StringBuffer(256);
 			sb.append("time : ");
 			sb.append(location.getTime());
-			sb.append("\nerror code : ");
-			sb.append(location.getLocType());
+			//sb.append("\nerror code : ");
+			//sb.append(location.getLocType());
 			sb.append("\nlatitude : ");
 			sb.append(location.getLatitude());
 			sb.append("\nlontitude : ");
@@ -81,24 +84,20 @@ public class Location extends Application {
 				sb.append("\nsatellite : ");
 				sb.append(location.getSatelliteNumber());
 			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-				/**
-				 * 格式化显示地址信息
-				 */
-//				sb.append("\n省：");
-//				sb.append(location.getProvince());
-//				sb.append("\n市：");
-//				sb.append(location.getCity());
-//				sb.append("\n区/县：");
-//				sb.append(location.getDistrict());
-				sb.append("\naddr : ");
-				sb.append(location.getAddrStr());
+				//sb.append("\naddr : ");
+				//sb.append(location.getAddrStr());
 			}
-			sb.append("\nsdk version : ");
-			sb.append(mLocationClient.getVersion());
+			//sb.append("\nsdk version : ");
+			//sb.append(mLocationClient.getVersion());
 			sb.append("\nisCellChangeFlag : ");
 			sb.append(location.isCellChangeFlag());
 			logMsg(sb.toString());
 			Log.i(TAG, sb.toString());
+			if (checkLocationReasonable(location) && (mapView!=null)) {
+				Point pt=mapView.toMapPoint((float)location.getLongitude(),(float)location.getLatitude());
+				mapView.centerAt(pt, true);
+				
+			}
 		}
 		
 		public void onReceivePoi(BDLocation poiLocation) {
@@ -108,8 +107,8 @@ public class Location extends Application {
 			StringBuffer sb = new StringBuffer(256);
 			sb.append("Poi time : ");
 			sb.append(poiLocation.getTime());
-			sb.append("\nerror code : "); 
-			sb.append(poiLocation.getLocType());
+			//sb.append("\nerror code : "); 
+			//sb.append(poiLocation.getLocType());
 			sb.append("\nlatitude : ");
 			sb.append(poiLocation.getLatitude());
 			sb.append("\nlontitude : ");
@@ -117,8 +116,8 @@ public class Location extends Application {
 			sb.append("\nradius : ");
 			sb.append(poiLocation.getRadius());
 			if (poiLocation.getLocType() == BDLocation.TypeNetWorkLocation){
-				sb.append("\naddr : ");
-				sb.append(poiLocation.getAddrStr());
+				//sb.append("\naddr : ");
+				//sb.append(poiLocation.getAddrStr());
 			} 
 			if(poiLocation.hasPoi()){
 				sb.append("\nPoi:");
@@ -134,5 +133,21 @@ public class Location extends Application {
 		public void onNotify(BDLocation mlocation, float distance){
 			mVibrator01.vibrate(1000);
 		}
+	}
+	private boolean checkLocationReasonable(BDLocation location) {
+		// TODO Auto-generated method stub
+		if (location.getLatitude()<1) {
+			return false;
+		}
+		if (location.getLongitude()<1) {
+			return false;
+		}
+		if(location.getLatitude()>180){
+			return false;
+		}
+		if(location.getLongitude()>180){
+			return false;
+		}
+		return true;
 	}
 }

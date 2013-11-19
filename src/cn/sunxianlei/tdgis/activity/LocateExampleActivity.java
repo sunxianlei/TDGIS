@@ -5,8 +5,17 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.BDNotifyListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapView;
 import com.esri.android.map.ags.ArcGISLocalTiledLayer;
+import com.esri.android.map.event.OnLongPressListener;
+import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.android.map.event.OnStatusChangedListener.STATUS;
+import com.esri.core.geometry.Point;
+import com.esri.core.map.Graphic;
+import com.esri.core.renderer.SimpleRenderer;
+import com.esri.core.symbol.SimpleMarkerSymbol;
+import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
 
 import cn.sunxianlei.tdgis.util.Location;
 import cn.sunxianlei.tdgis.R;
@@ -15,6 +24,7 @@ import cn.sunxianlei.tdgis.R.layout;
 import cn.sunxianlei.tdgis.util.Config;
 import android.app.Activity;
 import android.app.Service;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Process;
 import android.os.Vibrator;
@@ -23,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LocateExampleActivity extends Activity {
 	private MapView mapView=null;
@@ -31,9 +42,10 @@ public class LocateExampleActivity extends Activity {
 	private TextView locationInfoTextView=null;
 	private Button startButton;
 	private LocationClient locationClient;
-	//MyLocationListenner mLocationListenner;
 	private boolean  mIsStart;
 	private static int count = 1;
+	private Point pinPoint=null;
+	private GraphicsLayer gLayer;
 	
 	public static String TAG="LocateExample";
 	@Override
@@ -43,15 +55,19 @@ public class LocateExampleActivity extends Activity {
 		setContentView(R.layout.activity_locate);
 		
 		mapView=(MapView)findViewById(R.id.mapviewInLocateActivity);
-		localTiledLayer=new ArcGISLocalTiledLayer("file://mnt/sdcard/BaseMap/Layers/");
+		localTiledLayer=new ArcGISLocalTiledLayer(Config.LOCATE_BASEMAP_PATH);
 		mapView.addLayer(localTiledLayer);
+		gLayer=new GraphicsLayer();
+		mapView.addLayer(gLayer);
 		
 		locationInfoTextView=(TextView)findViewById(R.id.locationInfoTextViewInLocateActivity);
 		startButton=(Button)findViewById(R.id.startBtnInLocateActivity);
 		mIsStart = false;
 		
 		locationClient = ((Location)getApplication()).mLocationClient;
+		pinPoint=((Location)getApplication()).pinPoint;
 		((Location)getApplication()).mTv = locationInfoTextView;
+		((Location)getApplication()).mapView=mapView;
 		
 		startButton.setOnClickListener( new OnClickListener() {
 			@Override
@@ -70,7 +86,38 @@ public class LocateExampleActivity extends Activity {
 				Log.d(TAG, "... mStartBtn onClick... pid="+Process.myPid()+" count="+count++);
 			}
 		});
-
+		
+		mapView.setOnLongPressListener(new OnLongPressListener() {
+			
+			@Override
+			public boolean onLongPress(float x, float y) {
+				// TODO Auto-generated method stub
+				if (mapView.isLoaded()) {
+					Point pt=mapView.toMapPoint(x,y);
+					String text="X:"+pt.getX()+"Y:"+pt.getY();
+					Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+					
+					gLayer.removeAll();
+					SimpleMarkerSymbol smsMarkerSymbol=new SimpleMarkerSymbol(Color.RED, 20, STYLE.CROSS);
+					Graphic graphic=new Graphic(pt, smsMarkerSymbol);
+					gLayer.addGraphic(graphic);
+					
+					return true;
+				}
+				return false;
+			}
+		});
+		mapView.setOnStatusChangedListener(new OnStatusChangedListener(){
+			@Override
+			public void onStatusChanged(Object source, STATUS status) {
+				// TODO Auto-generated method stub
+				//gLayer.removeAll();
+				//SimpleMarkerSymbol smsMarkerSymbol=new SimpleMarkerSymbol(Color.RED, 5, STYLE.CROSS);
+				//Graphic graphic=new Graphic(pinPoint, smsMarkerSymbol);
+				//gLayer.addGraphic(graphic);
+			}
+			
+		});
 	}
 	
 	//设置相关参数
@@ -100,4 +147,5 @@ public class LocateExampleActivity extends Activity {
 		super.onBackPressed();
 		LocateExampleActivity.this.finish();
 	}
+	
 }
