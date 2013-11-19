@@ -17,9 +17,9 @@ public class LocateExampleActivity extends Activity {
 		setContentView(R.layout.activity_locate);
 		
 		mapView=(MapView)findViewById(R.id.mapviewInLocateActivity);
-		localTiledLayer=new ArcGISLocalTiledLayer("file://mnt/sdcard/layers");
+		localTiledLayer=new ArcGISLocalTiledLayer("file://mnt/sdcard/BaseMap/Layers/");
 		mapView.addLayer(localTiledLayer);
-		
+
 	}
 
 }
