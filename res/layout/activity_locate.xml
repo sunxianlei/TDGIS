@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="200dp"
         android:orientation="vertical" >
         <com.esri.android.map.MapView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,15 +21,21 @@
     <LinearLayout
         android:id="@+id/actionBarInLocateActivity"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:orientation="horizontal" >
-        <Button 
-            android:id="@+id/drawBtnInLocateActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="画线"/>
+        android:orientation="vertical" >
+        <Button
+	        android:id="@+id/startBtnInLocateActivity"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="开始定位" >
+	    </Button>
+        <TextView
+	        android:id="@+id/locationInfoTextViewInLocateActivity"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+    	</TextView>
     </LinearLayout>
 
 </RelativeLayout>
