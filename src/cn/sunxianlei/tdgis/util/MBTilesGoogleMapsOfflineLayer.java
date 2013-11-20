@@ -1,6 +1,17 @@
 package cn.sunxianlei.tdgis.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.concurrent.RejectedExecutionException;
+
+import org.tilespitter.mapboxtiles.MBTilesDroidSpitter;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.os.Environment;
+import android.util.Log;
 
 import com.esri.android.map.TiledServiceLayer;
 import com.esri.android.map.TiledServiceLayer.TileInfo;
@@ -10,11 +21,23 @@ import com.esri.core.geometry.SpatialReference;
 
 public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
 	private TileInfo mTileInfo;
-	private String MBTilesPath;
-	public MBTilesGoogleMapsOfflineLayer(String MBTilesPath) {
+	
+	private final File sdcard = Environment.getExternalStorageDirectory();
+	private final String db_name = "map.mbtiles";	
+	private final File sqlitefile = new File(sdcard, db_name); // sqlite file to load	
+	private MBTilesDroidSpitter sqlcli;
+	private Context context;
+	
+	public MBTilesGoogleMapsOfflineLayer(Context context) {
 		super("");
-		this.MBTilesPath=MBTilesPath;
+		this.context=context;
 		// TODO Auto-generated constructor stub
+		sqlcli = new MBTilesDroidSpitter(context,sqlitefile);
+		
+		boolean fetchMetadata = true;
+    	String versionOfMbtileSpec = "1.0";
+    	sqlcli.open(fetchMetadata, versionOfMbtileSpec);
+
 		try
         {
             getServiceExecutor().submit(new Runnable() 
@@ -39,15 +62,15 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
 	protected void initLayer()
     {
          this.buildTileInfo();
-         this.setFullExtent(new Envelope(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787));
-         this.setInitialExtent(new Envelope(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787));
+         this.setFullExtent(new Envelope(13218219.740283, 3768868.88604863, 13223149.9286074, 3772442.31712096));
+         this.setInitialExtent(new Envelope(13218219.740283, 3768868.88604863, 13223149.9286074, 3772442.31712096));
          this.setDefaultSpatialReference(SpatialReference.create(102113));
          super.initLayer();
     }
 	
 	private void buildTileInfo()
     {
-        Point iPoint = new Point(-20037508.342787, 20037508.342787);
+        Point iPoint = new Point(13218219.740283, 3768868.88604863);
         double[] iScale =
     	{
     		591657527.591555,
@@ -101,15 +124,19 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
 	@Override
 	protected byte[] getTile(int level, int col, int row) throws Exception {
 		// TODO Auto-generated method stub
-		byte[] iResult=null;
-		try {
-			//读取MBTiles中相应位置的图片
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		byte[] tileImage=null;
+		Bitmap bitmap=sqlcli.getTileAsBitmap(Integer.toString(col),Integer.toString(row),Integer.toString(level));
+		if (bitmap!=null) {
+			tileImage=Bitmap2Bytes(bitmap);
+			Log.i("MBTilesLayer", bitmap.toString());
 		}
-		return iResult;
+		Log.i("MBTilesLayer", "no");
+		return tileImage;
 	}
-
+	
+	public byte[] Bitmap2Bytes(Bitmap bm) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+		return baos.toByteArray();
+	}
 }

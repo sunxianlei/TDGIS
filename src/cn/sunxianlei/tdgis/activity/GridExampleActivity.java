@@ -12,6 +12,7 @@ import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
 import cn.sunxianlei.tdgis.R;
 import cn.sunxianlei.tdgis.util.Config;
 import cn.sunxianlei.tdgis.util.GoogleMapsOnlineLayer;
+import cn.sunxianlei.tdgis.util.MBTilesGoogleMapsOfflineLayer;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,8 +31,10 @@ public class GridExampleActivity extends Activity {
 		//localTiledLayer=new ArcGISLocalTiledLayer(Config.LOCATE_BASEMAP_PATH);
 		//mapView.addLayer(localTiledLayer);
 		
-		GoogleMapsOnlineLayer googleMapsLayer=new GoogleMapsOnlineLayer(GoogleMapsOnlineLayer.MapType.VECTOR, null, true);
-		mapView.addLayer(googleMapsLayer);
+		//GoogleMapsOnlineLayer googleMapsLayer=new GoogleMapsOnlineLayer(GoogleMapsOnlineLayer.MapType.VECTOR, null, true);
+		//mapView.addLayer(googleMapsLayer);
+		MBTilesGoogleMapsOfflineLayer mbTilesGoogleMapsOfflineLayer=new MBTilesGoogleMapsOfflineLayer(getApplicationContext());
+		mapView.addLayer(mbTilesGoogleMapsOfflineLayer);
 		
 		mapView.setOnLongPressListener(new OnLongPressListener() {
 			
