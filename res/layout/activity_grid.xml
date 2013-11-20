@@ -2,6 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-
+    <LinearLayout
+        android:id="@+id/mapContainerInGridActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical" >
+        <com.esri.android.map.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mapviewInGridActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" > 
+        </com.esri.android.map.MapView>
+    </LinearLayout>
 </RelativeLayout>
