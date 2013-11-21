@@ -7,14 +7,16 @@ import java.util.concurrent.RejectedExecutionException;
 import org.tilespitter.mapboxtiles.MBTilesDroidSpitter;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.Log;
 
+import cn.sunxianlei.tdgis.R;
+
+import com.baidu.location.r;
 import com.esri.android.map.TiledServiceLayer;
-import com.esri.android.map.TiledServiceLayer.TileInfo;
 import com.esri.core.geometry.Envelope;
 import com.esri.core.geometry.Point;
 import com.esri.core.geometry.SpatialReference;
@@ -32,10 +34,10 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
 		super("");
 		this.context=context;
 		// TODO Auto-generated constructor stub
-		sqlcli = new MBTilesDroidSpitter(context,sqlitefile);
+		sqlcli = new MBTilesDroidSpitter(this.context,sqlitefile);
 		
 		boolean fetchMetadata = true;
-    	String versionOfMbtileSpec = "1.0";
+    	String versionOfMbtileSpec = "1.1";
     	sqlcli.open(fetchMetadata, versionOfMbtileSpec);
 
 		try
@@ -62,15 +64,16 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
 	protected void initLayer()
     {
          this.buildTileInfo();
-         this.setFullExtent(new Envelope(13218219.740283, 3768868.88604863, 13223149.9286074, 3772442.31712096));
-         this.setInitialExtent(new Envelope(13218219.740283, 3768868.88604863, 13223149.9286074, 3772442.31712096));
+         this.setFullExtent(new Envelope(13216629.183413, 3762785.57643891, 13229319.6053634, 3774736.15473275));
+         this.setInitialExtent(new Envelope(13216629.183413, 3762785.57643891, 13229319.6053634, 3774736.15473275));
          this.setDefaultSpatialReference(SpatialReference.create(102113));
+         //this.setDefaultSpatialReference(SpatialReference.create(3857));
          super.initLayer();
     }
 	
 	private void buildTileInfo()
     {
-        Point iPoint = new Point(13218219.740283, 3768868.88604863);
+        Point iPoint = new Point(-20037508.342787,20037508.342787);
         double[] iScale =
     	{
     		591657527.591555,
@@ -120,23 +123,76 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
         this.mTileInfo=new com.esri.android.map.TiledServiceLayer.TileInfo(iPoint, iScale, iRes, 20, 96, 256, 256);
         this.setTileInfo(this.mTileInfo);
     }
+	
+	public void refresh()
+    {
+		Log.i("MBTilesLayer", "refresh");
+        try
+        {
+            getServiceExecutor().submit(new Runnable() 
+            {
+                public final void run()
+                {
+                    if(MBTilesGoogleLayer.isInitialized())
+                        try
+                        {
+                        	MBTilesGoogleLayer.clearTiles();
+                            return;
+                        }
+                        catch(Exception exception)
+                        {
+                            Log.e("ArcGIS", "Re-initialization of the layer failed.", exception);
+                        }
+                }
+                final MBTilesGoogleMapsOfflineLayer MBTilesGoogleLayer;          
+                {
+                	MBTilesGoogleLayer = MBTilesGoogleMapsOfflineLayer.this;
+                }
+            });
+            return;
+        }
+        catch(RejectedExecutionException ree)
+        {
+            return;
+        }
+    }  
 
 	@Override
 	protected byte[] getTile(int level, int col, int row) throws Exception {
 		// TODO Auto-generated method stub
 		byte[] tileImage=null;
+		Log.i("MBTilesLayer", Integer.toString(level)+","+Integer.toString(col)+","+Integer.toString(row));
 		Bitmap bitmap=sqlcli.getTileAsBitmap(Integer.toString(col),Integer.toString(row),Integer.toString(level));
 		if (bitmap!=null) {
 			tileImage=Bitmap2Bytes(bitmap);
 			Log.i("MBTilesLayer", bitmap.toString());
+		}else {
+			/*
+			Drawable drawable=context.getResources().getDrawable(R.drawable.mapexample);
+			bitmap=((BitmapDrawable)drawable).getBitmap();
+			tileImage=Bitmap2Bytes(bitmap);
+			*/
+			Log.i("MBTilesLayer", "png is null");
 		}
-		Log.i("MBTilesLayer", "no");
 		return tileImage;
 	}
-	
+		
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		super.finalize();
+		sqlcli.close();
+	}
+
+	@Override
+	public TileInfo getTileInfo() {
+		// TODO Auto-generated method stub
+		return this.mTileInfo;
+	}
+
 	public byte[] Bitmap2Bytes(Bitmap bm) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
 		return baos.toByteArray();
 	}
 }

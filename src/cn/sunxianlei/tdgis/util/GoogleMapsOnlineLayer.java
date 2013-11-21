@@ -203,6 +203,7 @@ public class GoogleMapsOnlineLayer extends TiledServiceLayer
 		{
 			ex.printStackTrace();
 		}
+		Log.i("Google", iResult.toString());
 		return iResult;
     }
 

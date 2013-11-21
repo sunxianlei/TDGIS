@@ -4,6 +4,8 @@ import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapView;
 import com.esri.android.map.ags.ArcGISLocalTiledLayer;
 import com.esri.android.map.event.OnLongPressListener;
+import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.android.map.event.OnStatusChangedListener.STATUS;
 import com.esri.core.geometry.Point;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.SimpleMarkerSymbol;
@@ -49,6 +51,14 @@ public class GridExampleActivity extends Activity {
 					return true;
 				}
 				return false;
+			}
+		});
+		mapView.setOnStatusChangedListener(new OnStatusChangedListener() {
+			
+			@Override
+			public void onStatusChanged(Object source, STATUS status) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}
