@@ -63,8 +63,10 @@ public class GoogleMapsOnlineLayer extends TiledServiceLayer
     protected void initLayer()
     {
          this.buildTileInfo();
-         this.setFullExtent(new Envelope(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787));
-         this.setInitialExtent(new Envelope(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787));
+         //this.setFullExtent(new Envelope(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787));
+         //this.setInitialExtent(new Envelope(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787));
+         this.setFullExtent(new Envelope(13216629.183413, 3762785.57643891, 13229319.6053634, 3774736.15473275));
+         this.setInitialExtent(new Envelope(13216629.183413, 3762785.57643891, 13229319.6053634, 3774736.15473275));
          this.setDefaultSpatialReference(SpatialReference.create(102113));
          super.initLayer();
     }
@@ -203,7 +205,6 @@ public class GoogleMapsOnlineLayer extends TiledServiceLayer
 		{
 			ex.printStackTrace();
 		}
-		Log.i("Google", iResult.toString());
 		return iResult;
     }
 
