@@ -6,6 +6,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.tilespitter.mapboxtiles.MBTilesDroidSpitter;
 
+import android.R.integer;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -161,8 +162,8 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
 	protected byte[] getTile(int level, int col, int row) throws Exception {
 		// TODO Auto-generated method stub
 		byte[] tileImage=null;
-		Log.i("MBTilesLayer", Integer.toString(level)+","+Integer.toString(col)+","+Integer.toString(row));
-		Bitmap bitmap=sqlcli.getTileAsBitmap(Integer.toString(col),Integer.toString(row),Integer.toString(level));
+		int tmsrow=((int)(Math.pow(2.0, (double)level) - 1.0)) - row;
+		Bitmap bitmap=sqlcli.getTileAsBitmap(Integer.toString(col),Integer.toString(tmsrow),Integer.toString(level));
 		if (bitmap!=null) {
 			tileImage=Bitmap2Bytes(bitmap);
 			Log.i("MBTilesLayer", bitmap.toString());
