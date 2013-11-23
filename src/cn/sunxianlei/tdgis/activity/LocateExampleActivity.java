@@ -18,6 +18,8 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
 
 import cn.sunxianlei.tdgis.util.Location;
+import cn.sunxianlei.tdgis.util.MBTilesGoogleMapsOfflineLayer;
+import cn.sunxianlei.tdgis.util.Util;
 import cn.sunxianlei.tdgis.R;
 import cn.sunxianlei.tdgis.R.id;
 import cn.sunxianlei.tdgis.R.layout;
@@ -37,7 +39,8 @@ import android.widget.Toast;
 
 public class LocateExampleActivity extends Activity {
 	private MapView mapView=null;
-	private ArcGISLocalTiledLayer localTiledLayer;
+	//private ArcGISLocalTiledLayer localTiledLayer;
+	private MBTilesGoogleMapsOfflineLayer googleLayer;
 	
 	private TextView locationInfoTextView=null;
 	private Button startButton;
@@ -55,8 +58,10 @@ public class LocateExampleActivity extends Activity {
 		setContentView(R.layout.activity_locate);
 		
 		mapView=(MapView)findViewById(R.id.mapviewInLocateActivity);
-		localTiledLayer=new ArcGISLocalTiledLayer(Config.LOCATE_BASEMAP_PATH);
-		mapView.addLayer(localTiledLayer);
+		//localTiledLayer=new ArcGISLocalTiledLayer(Config.LOCATE_BASEMAP_PATH);
+		//mapView.addLayer(localTiledLayer);
+		googleLayer=new MBTilesGoogleMapsOfflineLayer(getApplicationContext());
+		mapView.addLayer(googleLayer);
 		gLayer=new GraphicsLayer();
 		mapView.addLayer(gLayer);
 		
@@ -92,6 +97,7 @@ public class LocateExampleActivity extends Activity {
 			@Override
 			public boolean onLongPress(float x, float y) {
 				// TODO Auto-generated method stub
+				
 				if (mapView.isLoaded()) {
 					Point pt=mapView.toMapPoint(x,y);
 					String text="X:"+pt.getX()+"Y:"+pt.getY();
@@ -107,24 +113,14 @@ public class LocateExampleActivity extends Activity {
 				return false;
 			}
 		});
-		mapView.setOnStatusChangedListener(new OnStatusChangedListener(){
-			@Override
-			public void onStatusChanged(Object source, STATUS status) {
-				// TODO Auto-generated method stub
-				//gLayer.removeAll();
-				//SimpleMarkerSymbol smsMarkerSymbol=new SimpleMarkerSymbol(Color.RED, 5, STYLE.CROSS);
-				//Graphic graphic=new Graphic(pinPoint, smsMarkerSymbol);
-				//gLayer.addGraphic(graphic);
-			}
-			
-		});
+
 	}
 	
 	//设置相关参数
 		private void setLocationOption(){
 			LocationClientOption option = new LocationClientOption();
 			option.setOpenGps(true);				//打开gps
-			option.setCoorType("bd09ll");		//设置坐标类型
+			option.setCoorType("gcj02");		//设置坐标类型
 			option.setServiceName("com.baidu.location.service_v2.9");	
 			option.setAddrType("all");		
 			option.setScanSpan(10000);

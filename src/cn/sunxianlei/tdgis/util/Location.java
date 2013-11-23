@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Application;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Process;
 import android.os.Vibrator;
@@ -17,8 +18,12 @@ import com.baidu.location.GeofenceClient;
 import com.baidu.location.LocationClient;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.MapView;
+import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.android.map.event.OnStatusChangedListener.STATUS;
 import com.esri.core.geometry.Point;
 import com.esri.core.map.Graphic;
+import com.esri.core.symbol.SimpleMarkerSymbol;
+import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
 
 public class Location extends Application {
 
@@ -33,7 +38,7 @@ public class Location extends Application {
 	
 	public MapView mapView=null;
 	public Point pinPoint=null;
-	
+	private GraphicsLayer gLayer;
 	@Override
 	public void onCreate() {
 		mLocationClient = new LocationClient(this);
@@ -46,7 +51,7 @@ public class Location extends Application {
 	}
 	
 	/**
-	 * 显示请求字符串
+	 * 鏄剧ず璇锋眰瀛楃涓�
 	 * @param str
 	 */
 	public void logMsg(String str) {
@@ -60,7 +65,7 @@ public class Location extends Application {
 	}
 	
 	/**
-	 * 监听函数，有更新位置的时候，格式化成字符串，输出到屏幕中
+	 * 鐩戝惉鍑芥暟锛屾湁鏇存柊浣嶇疆鐨勬椂鍊欙紝鏍煎紡鍖栨垚瀛楃涓诧紝杈撳嚭鍒板睆骞曚腑
 	 */
 	public class MyLocationListenner implements BDLocationListener {
 		@Override
@@ -94,9 +99,17 @@ public class Location extends Application {
 			logMsg(sb.toString());
 			Log.i(TAG, sb.toString());
 			if (checkLocationReasonable(location) && (mapView!=null)) {
-				Point pt=mapView.toMapPoint((float)location.getLongitude(),(float)location.getLatitude());
-				mapView.centerAt(pt, true);
 				
+				Point pt=new Point(location.getLongitude(),location.getLatitude());
+				Point ptMercator=Util.GeographicToWebMercator(pt);
+				//pinPoint=mapView.toMapPoint((float)ptMercator.getX(),(float)ptMercator.getY());
+				
+				gLayer.removeAll();
+				//SimpleMarkerSymbol smsMarkerSymbol=new SimpleMarkerSymbol(Color.RED, 5, STYLE.CROSS);
+				//Graphic graphic=new Graphic(ptMercator, smsMarkerSymbol);
+				Log.i(TAG, ptMercator.getX()+","+ptMercator.getY());
+				//gLayer.addGraphic(graphic);
+				//mapView.centerAt(ptMercator, true);
 			}
 		}
 		
@@ -150,4 +163,5 @@ public class Location extends Application {
 		}
 		return true;
 	}
+	
 }
