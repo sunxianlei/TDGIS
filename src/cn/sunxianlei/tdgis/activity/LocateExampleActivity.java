@@ -47,7 +47,6 @@ public class LocateExampleActivity extends Activity {
 	private LocationClient locationClient;
 	private boolean  mIsStart;
 	private static int count = 1;
-	private Point pinPoint=null;
 	private GraphicsLayer gLayer;
 	
 	public static String TAG="LocateExample";
@@ -70,7 +69,6 @@ public class LocateExampleActivity extends Activity {
 		mIsStart = false;
 		
 		locationClient = ((Location)getApplication()).mLocationClient;
-		pinPoint=((Location)getApplication()).pinPoint;
 		((Location)getApplication()).mTv = locationInfoTextView;
 		((Location)getApplication()).mapView=mapView;
 		
@@ -99,6 +97,7 @@ public class LocateExampleActivity extends Activity {
 				// TODO Auto-generated method stub
 				
 				if (mapView.isLoaded()) {
+					
 					Point pt=mapView.toMapPoint(x,y);
 					String text="X:"+pt.getX()+"Y:"+pt.getY();
 					Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
@@ -109,6 +108,7 @@ public class LocateExampleActivity extends Activity {
 					gLayer.addGraphic(graphic);
 					
 					return true;
+					
 				}
 				return false;
 			}

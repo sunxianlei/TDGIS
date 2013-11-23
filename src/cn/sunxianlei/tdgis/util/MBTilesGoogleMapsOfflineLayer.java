@@ -166,7 +166,6 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
 		Bitmap bitmap=sqlcli.getTileAsBitmap(Integer.toString(col),Integer.toString(tmsrow),Integer.toString(level));
 		if (bitmap!=null) {
 			tileImage=Bitmap2Bytes(bitmap);
-			Log.i("MBTilesLayer", bitmap.toString());
 		}else {
 			/*
 			Drawable drawable=context.getResources().getDrawable(R.drawable.mapexample);

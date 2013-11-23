@@ -48,6 +48,7 @@ public class Location extends Application {
 		
 		super.onCreate(); 
 		Log.d(TAG, "... Application onCreate... pid=" + Process.myPid());
+		gLayer=new GraphicsLayer();
 	}
 	
 	/**
@@ -102,14 +103,14 @@ public class Location extends Application {
 				
 				Point pt=new Point(location.getLongitude(),location.getLatitude());
 				Point ptMercator=Util.GeographicToWebMercator(pt);
-				//pinPoint=mapView.toMapPoint((float)ptMercator.getX(),(float)ptMercator.getY());
 				
 				gLayer.removeAll();
-				//SimpleMarkerSymbol smsMarkerSymbol=new SimpleMarkerSymbol(Color.RED, 5, STYLE.CROSS);
-				//Graphic graphic=new Graphic(ptMercator, smsMarkerSymbol);
+				SimpleMarkerSymbol smsMarkerSymbol=new SimpleMarkerSymbol(Color.RED, 15, STYLE.CROSS);
+				Graphic graphic=new Graphic(ptMercator, smsMarkerSymbol);
 				Log.i(TAG, ptMercator.getX()+","+ptMercator.getY());
-				//gLayer.addGraphic(graphic);
-				//mapView.centerAt(ptMercator, true);
+				gLayer.addGraphic(graphic);
+				mapView.addLayer(gLayer);
+				mapView.centerAt(ptMercator, true);
 			}
 		}
 		
