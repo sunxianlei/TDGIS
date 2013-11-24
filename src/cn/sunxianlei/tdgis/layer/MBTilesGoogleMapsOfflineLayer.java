@@ -1,4 +1,4 @@
-package cn.sunxianlei.tdgis.util;
+package cn.sunxianlei.tdgis.layer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -68,7 +68,6 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
          this.setFullExtent(new Envelope(13216629.183413, 3762785.57643891, 13229319.6053634, 3774736.15473275));
          this.setInitialExtent(new Envelope(13216629.183413, 3762785.57643891, 13229319.6053634, 3774736.15473275));
          this.setDefaultSpatialReference(SpatialReference.create(102113));
-         //this.setDefaultSpatialReference(SpatialReference.create(3857));
          super.initLayer();
     }
 	
@@ -127,7 +126,6 @@ public class MBTilesGoogleMapsOfflineLayer extends TiledServiceLayer {
 	
 	public void refresh()
     {
-		Log.i("MBTilesLayer", "refresh");
         try
         {
             getServiceExecutor().submit(new Runnable() 

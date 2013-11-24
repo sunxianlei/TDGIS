@@ -5,7 +5,7 @@ import com.esri.android.map.event.OnLongPressListener;
 import com.esri.core.geometry.Point;
 
 import cn.sunxianlei.tdgis.R;
-import cn.sunxianlei.tdgis.util.GoogleMapsOnlineLayer;
+import cn.sunxianlei.tdgis.layer.GoogleMapsOnlineLayer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;

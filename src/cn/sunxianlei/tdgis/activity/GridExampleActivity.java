@@ -12,9 +12,9 @@ import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
 
 import cn.sunxianlei.tdgis.R;
+import cn.sunxianlei.tdgis.layer.GoogleMapsOnlineLayer;
+import cn.sunxianlei.tdgis.layer.MBTilesGoogleMapsOfflineLayer;
 import cn.sunxianlei.tdgis.util.Config;
-import cn.sunxianlei.tdgis.util.GoogleMapsOnlineLayer;
-import cn.sunxianlei.tdgis.util.MBTilesGoogleMapsOfflineLayer;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;

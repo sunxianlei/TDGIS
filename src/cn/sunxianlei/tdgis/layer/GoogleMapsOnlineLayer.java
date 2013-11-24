@@ -1,4 +1,4 @@
-package cn.sunxianlei.tdgis.util;
+package cn.sunxianlei.tdgis.layer;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

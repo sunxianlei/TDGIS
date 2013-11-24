@@ -17,8 +17,8 @@ import com.esri.core.renderer.SimpleRenderer;
 import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
 
+import cn.sunxianlei.tdgis.layer.MBTilesGoogleMapsOfflineLayer;
 import cn.sunxianlei.tdgis.util.Location;
-import cn.sunxianlei.tdgis.util.MBTilesGoogleMapsOfflineLayer;
 import cn.sunxianlei.tdgis.util.Util;
 import cn.sunxianlei.tdgis.R;
 import cn.sunxianlei.tdgis.R.id;
