@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/offlinereditlayout"
+    android:layout_gravity="center_horizontal" >
+       
+        <Button
+            android:id="@+id/editbutton"
+            android:drawableTop="@drawable/edit_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:enabled="true"
+            android:text="新建"  />
+				
+		<Button
+		    android:id="@+id/removebutton"
+		    android:drawableTop="@drawable/edit_map"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="10dp"
+		    android:layout_marginLeft="20dp"
+		    android:layout_marginTop="10dp"
+		    android:enabled="true"
+		    android:text="图形" />
+	
+		<Button
+		    android:id="@+id/clearbutton"
+		    android:drawableTop="@drawable/edit_property"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="10dp"
+		    android:layout_marginLeft="20dp"
+		    android:layout_marginTop="10dp"
+		    android:enabled="true"
+		    android:text="属性" />
+		
+		<Button
+		    android:id="@+id/undobutton"
+		    android:drawableTop="@drawable/edit_delete"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="10dp"
+		    android:layout_marginLeft="20dp"
+		    android:layout_marginTop="10dp"
+		    android:enabled="true"
+		    android:text="删除" />
+</LinearLayout>
