@@ -3,6 +3,7 @@ package cn.sunxianlei.tdgis.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.R.drawable;
 import android.app.Application;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,8 @@ import android.os.Process;
 import android.os.Vibrator;
 import android.util.Log;
 import android.widget.TextView;
+
+import cn.sunxianlei.tdgis.R;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -22,6 +25,7 @@ import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.android.map.event.OnStatusChangedListener.STATUS;
 import com.esri.core.geometry.Point;
 import com.esri.core.map.Graphic;
+import com.esri.core.symbol.PictureMarkerSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol.STYLE;
 
@@ -105,8 +109,10 @@ public class Location extends Application {
 				Point ptMercator=Util.GeographicToWebMercator(pt);
 				
 				gLayer.removeAll();
-				SimpleMarkerSymbol smsMarkerSymbol=new SimpleMarkerSymbol(Color.RED, 15, STYLE.CROSS);
-				Graphic graphic=new Graphic(ptMercator, smsMarkerSymbol);
+				//SimpleMarkerSymbol smsMarkerSymbol=new SimpleMarkerSymbol(Color.RED, 15, STYLE.CROSS);
+				Drawable pinImage=getApplicationContext().getResources().getDrawable(R.drawable.pin_red);
+				PictureMarkerSymbol symbol=new PictureMarkerSymbol(pinImage);
+				Graphic graphic=new Graphic(ptMercator, symbol);
 				Log.i(TAG, ptMercator.getX()+","+ptMercator.getY());
 				gLayer.addGraphic(graphic);
 				mapView.addLayer(gLayer);
