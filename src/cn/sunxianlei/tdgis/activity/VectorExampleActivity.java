@@ -10,6 +10,10 @@ import cn.sunxianlei.tdgis.layer.GoogleMapsOnlineLayer;
 import cn.sunxianlei.tdgis.layer.MBTilesGoogleMapsOfflineLayer;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -17,6 +21,11 @@ public class VectorExampleActivity extends Activity {
 
 	private MapView mapView=null;
 	TabHost mTabHost;
+	LinearLayout buttonContainer;
+	
+	Button newButton;
+	
+	Button editButton;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -39,6 +48,33 @@ public class VectorExampleActivity extends Activity {
 		mapView = ((MapView) findViewById(R.id.map));
 		MBTilesGoogleMapsOfflineLayer mbTilesGoogleMapsOfflineLayer=new MBTilesGoogleMapsOfflineLayer(getApplicationContext());
 		mapView.addLayer(mbTilesGoogleMapsOfflineLayer);
+		
+		buttonContainer=(LinearLayout)findViewById(R.id.editButtonContainer);
+		
+		newButton=(Button)findViewById(R.id.editButtonInVectorActivity);
+		newButton.setOnClickListener(newButtonClickListener);
+		editButton=(Button)findViewById(R.id.editButtonInButtonContainer);
+		editButton.setOnClickListener(editButtonClickListener);
 	}
+	
+	private OnClickListener newButtonClickListener=new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			buttonContainer.setVisibility(View.VISIBLE);
+			editButton.setEnabled(true);
+		}
+	};
+	
+	private OnClickListener editButtonClickListener=new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			buttonContainer.setVisibility(View.GONE);
+		}
+	};
 
 }
+

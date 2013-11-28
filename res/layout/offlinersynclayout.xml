@@ -11,9 +11,7 @@
         android:drawableTop="@drawable/syn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
         android:enabled="true"
         android:text="同步"/>
 		
