@@ -59,7 +59,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:layout_marginLeft="20dp"
             android:text="Edit" />
 
         <Button
@@ -67,7 +66,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="Delete" />
+            android:text="Remove" />
+        
+        <Button android:id="@+id/cancelButtonInButtonContainer"
+	    		android:text="Cancel"
+	    		android:enabled="false"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:visibility="gone"
+				/>		
 
         <Button
             android:id="@+id/cancelButtonInButtonContainer"
